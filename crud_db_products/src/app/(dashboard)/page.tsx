@@ -22,10 +22,10 @@ export default function Page() {
           </div>
 
           <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
-            <button type="button" className="action-button action-button--success">
+            {/* <button type="button" className="action-button action-button--success">
               <UploadIcon />
               <span>Carga Masiva</span>
-            </button>
+            </button> */}
             <button type="button" className="action-button action-button--primary">
               <PlusIcon />
               <span>Añadir Producto</span>
@@ -46,25 +46,25 @@ export default function Page() {
   );
 }
 
-function UploadIcon() {
-  return (
-    <svg
-      aria-hidden="true"
-      className="h-5 w-5"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-      strokeWidth="2"
-    >
-      <path strokeLinecap="round" strokeLinejoin="round" d="M12 16V4m0 0-4 4m4-4 4 4" />
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M5 15v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-3"
-      />
-    </svg>
-  );
-}
+// function UploadIcon() {
+//   return (
+//     <svg
+//       aria-hidden="true"
+//       className="h-5 w-5"
+//       fill="none"
+//       viewBox="0 0 24 24"
+//       stroke="currentColor"
+//       strokeWidth="2"
+//     >
+//       <path strokeLinecap="round" strokeLinejoin="round" d="M12 16V4m0 0-4 4m4-4 4 4" />
+//       <path
+//         strokeLinecap="round"
+//         strokeLinejoin="round"
+//         d="M5 15v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-3"
+//       />
+//     </svg>
+//   );
+// }
 
 function PlusIcon() {
   return (
