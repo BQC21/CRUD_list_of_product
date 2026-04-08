@@ -2,14 +2,28 @@
 
 import { useCallback, useEffect, useState } from "react";
 
-import { getProducts, getProductFilterOptions } from "@/features/services/productQueries";
-import type { Product, ProductFilterOptions } from "@/features/types/product";
+import {
+    createProduct,
+    deleteProduct,
+    getProducts,
+    getProductFilterOptions,
+    updateProduct,
+} from "@/features/services/productQueries";
+import type { Product, ProductFilterOptions, ProductFormData } from "@/features/types/product";
 
 interface UseProductsResult {
     products: Product[];
     loading: boolean;
     error: string | null;
     refetch: () => Promise<void>;
+}
+
+interface UseProductMutationsResult {
+    loading: boolean;
+    error: string | null;
+    create: (product: ProductFormData) => Promise<Product>;
+    update: (id: string, product: ProductFormData) => Promise<Product>;
+    remove: (id: string) => Promise<void>;
 }
 
 export function useProducts(): UseProductsResult {
@@ -82,4 +96,68 @@ export function useProductFilterOptions() {
         error,
         refetch: fetchOptions,
     };
-}   
+}
+
+export function useProductMutations(): UseProductMutationsResult {
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+
+    const create = useCallback(async (product: ProductFormData) => {
+        try {
+            setLoading(true);
+            setError(null);
+
+            return await createProduct(product);
+        } catch (err) {
+            const message =
+                err instanceof Error ? err.message : "Error al crear el producto";
+
+            setError(message);
+            throw err;
+        } finally {
+            setLoading(false);
+        }
+    }, []);
+
+    const update = useCallback(async (id: string, product: ProductFormData) => {
+        try {
+            setLoading(true);
+            setError(null);
+
+            return await updateProduct(id, product);
+        } catch (err) {
+            const message =
+                err instanceof Error ? err.message : "Error al actualizar el producto";
+
+            setError(message);
+            throw err;
+        } finally {
+            setLoading(false);
+        }
+    }, []);
+
+    const remove = useCallback(async (id: string) => {
+        try {
+            setLoading(true);
+            setError(null);
+
+            await deleteProduct(id);
+        } catch (err) {
+            const message =
+                err instanceof Error ? err.message : "Error al eliminar el producto";
+
+            setError(message);
+            throw err;
+        } finally {
+            setLoading(false);
+        }
+    }, []);
+
+    return {
+        loading,
+        error,
+        create,
+        update,
+        remove,
+    };
+}
