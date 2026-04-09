@@ -28,6 +28,7 @@ type ProductTableProps = {
   totalProducts: number;
   exchangeRate: number;
   onUpdateProduct: (product: Product) => void;
+  onDeleteProduct: (productId: string) => void;
 };
 
 function formatPen(value: number) {
@@ -38,7 +39,8 @@ function formatUsd(value: number) {
   return `$ ${value.toFixed(2)}`;
 }
 
-export function ProductTable({ products, totalProducts, exchangeRate, onUpdateProduct }: ProductTableProps) {
+export function ProductTable({ products, totalProducts, exchangeRate, onUpdateProduct, onDeleteProduct }: ProductTableProps) {
+
   return (
     <section className="space-y-4">
       <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_2px_8px_rgba(15,23,42,0.04)]">
@@ -86,7 +88,7 @@ export function ProductTable({ products, totalProducts, exchangeRate, onUpdatePr
                         />
                         <Button2Trash 
                             product={product}
-                            onDeleteProduct={onUpdateProduct}
+                            onDeleteProduct={onDeleteProduct}
                         />
                       </div>
                     </td>

@@ -104,6 +104,13 @@ export default function Page() {
               )
             )
           }
+          onDeleteProduct={(productId: string) =>
+            setProducts((current) =>
+              current.filter((product) =>
+                product.id !== productId
+              )
+            )
+          }
         />
       </div>
     </main>

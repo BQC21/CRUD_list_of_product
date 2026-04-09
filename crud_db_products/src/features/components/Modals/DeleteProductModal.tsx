@@ -1,39 +1,22 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
 import { AddProductCloseIcon } from "@/app/components/icons/AddProductCloseIcon";
 import { AddProductReadonlyField } from "@/app/components/Form_fields/AddProductReadonlyField";
 import type { Product } from "@/features/types/product-types";
-import { createProductFormStateFromProduct, ProductFormState } from "@/utils/helpers";
 
 // --- Tipo de variables ---
 type DeleteProductModalProps = {
     product: Product;
-    onDeleteProduct: (product: Product) => void;
+    onDeleteProduct: (productId: string) => void
     onClose: () => void;
 };
 
 export function DeleteProductModal({ product, onDeleteProduct, onClose }: DeleteProductModalProps) {
 
-    const [form, setForm] = useState<ProductFormState>(() => createProductFormStateFromProduct(product));
-
-    // Actualizar campos del formulario
-    function updateField<K extends keyof ProductFormState>(field: K, value: ProductFormState[K]) {
-        setForm((current) => ({
-            ...current,
-            [field]: value,
-        }));
-    }
-
     // Aceptar actualizacion
-    function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    function handleDeleteProduct(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
-
-        onDeleteProduct({
-            id: product.id,
-            ...form,
-        });
-
+        onDeleteProduct(product.id);
         onClose();
     }
 
@@ -56,7 +39,7 @@ export function DeleteProductModal({ product, onDeleteProduct, onClose }: Delete
                     ¿Está seguro que desea eliminar el siguiente producto?
                 </p>
             </div>
-            <form onSubmit={handleSubmit} className="max-h-[calc(95vh-88px)] overflow-y-auto px-6 py-6">
+            <form onSubmit={handleDeleteProduct} className="max-h-[calc(95vh-88px)] overflow-y-auto px-6 py-6">
                 <AddProductReadonlyField
                     label="Código del producto"
                     value={product.code}    

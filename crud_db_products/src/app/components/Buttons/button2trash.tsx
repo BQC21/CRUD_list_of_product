@@ -7,7 +7,7 @@ import { Product } from "@/features/types/product-types";
 
 type DeleteProductModalProps = {
     product: Product;
-    onDeleteProduct: (product: Product) => void;
+    onDeleteProduct: (productId: string) => void;
 };
 
 export function Button2Trash({ product, onDeleteProduct }: DeleteProductModalProps) {
@@ -27,8 +27,8 @@ export function Button2Trash({ product, onDeleteProduct }: DeleteProductModalPro
         {open && (
             <DeleteProductModal
                 product={product}
-                onDeleteProduct={(product) => {
-                    onDeleteProduct(product);
+                onDeleteProduct={(productId) => {
+                    onDeleteProduct(productId);
                     setOpen(false);
                 }}
                 onClose={() => setOpen(false)}
