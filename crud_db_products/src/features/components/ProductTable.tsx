@@ -1,13 +1,4 @@
-const PRODUCT_ROW = {
-  supplierCode: "AND-001",
-  supplier: "Andet SAC",
-  code: "PANEL-450-MONO",
-  type: "Módulo",
-  brand: "JA SOLAR",
-  description: "Panel Solar Monocristalino 450W",
-  pricePen: "S/. 1003.00",
-  priceUsd: "$ 267.47",
-};
+import type { Product } from "@/features/components/product-types";
 
 const TABLE_HEADERS = [
   "Cód. Prov.",
@@ -21,7 +12,19 @@ const TABLE_HEADERS = [
   "Acciones",
 ];
 
-export function ProductTable() {
+type ProductTableProps = {
+  products: Product[];
+};
+
+function formatPen(value: number) {
+  return `S/. ${value.toFixed(2)}`;
+}
+
+function formatUsd(value: number) {
+  return `$ ${value.toFixed(2)}`;
+}
+
+export function ProductTable({ products }: ProductTableProps) {
   return (
     <section className="space-y-4">
       <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_2px_8px_rgba(15,23,42,0.04)]">
@@ -40,32 +43,44 @@ export function ProductTable() {
               </tr>
             </thead>
             <tbody>
-              <tr className="bg-white">
-                <td className="px-4 py-5 text-slate-500">{PRODUCT_ROW.supplierCode}</td>
-                <td className="px-4 py-5 text-slate-800">{PRODUCT_ROW.supplier}</td>
-                <td className="px-4 py-5 font-medium text-slate-900">{PRODUCT_ROW.code}</td>
-                <td className="px-4 py-5 text-slate-900">{PRODUCT_ROW.type}</td>
-                <td className="px-4 py-5 text-slate-900">{PRODUCT_ROW.brand}</td>
-                <td className="px-4 py-5 text-slate-900">{PRODUCT_ROW.description}</td>
-                <td className="px-4 py-5 text-slate-900">{PRODUCT_ROW.pricePen}</td>
-                <td className="px-4 py-5 text-slate-900">{PRODUCT_ROW.priceUsd}</td>
-                <td className="px-4 py-5">
-                  <div className="flex items-center gap-4 text-slate-500">
-                    <button type="button" className="table-icon-button text-indigo-600">
-                      <EditIcon />
-                    </button>
-                    <button type="button" className="table-icon-button text-red-500">
-                      <TrashIcon />
-                    </button>
-                  </div>
-                </td>
-              </tr>
+              {products.length > 0 ? (
+                products.map((product) => (
+                  <tr key={product.id} className="bg-white">
+                    <td className="px-4 py-5 text-slate-500">{product.supplierCode || "-"}</td>
+                    <td className="px-4 py-5 text-slate-800">{product.supplier}</td>
+                    <td className="px-4 py-5 font-medium text-slate-900">{product.code}</td>
+                    <td className="px-4 py-5 text-slate-900">{product.type}</td>
+                    <td className="px-4 py-5 text-slate-900">{product.brand}</td>
+                    <td className="px-4 py-5 text-slate-900">{product.description}</td>
+                    <td className="px-4 py-5 text-slate-900">{formatPen(product.pricePen)}</td>
+                    <td className="px-4 py-5 text-slate-900">{formatUsd(product.priceUsd)}</td>
+                    <td className="px-4 py-5">
+                      <div className="flex items-center gap-4 text-slate-500">
+                        <button type="button" className="table-icon-button text-indigo-600">
+                          <EditIcon />
+                        </button>
+                        <button type="button" className="table-icon-button text-red-500">
+                          <TrashIcon />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr className="bg-white">
+                  <td colSpan={9} className="px-4 py-10 text-center text-slate-500">
+                    No hay productos registrados todavía.
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>
       </div>
 
-      <p className="text-lg text-slate-500">Mostrando 1 de 1 productos</p>
+      <p className="text-lg text-slate-500">
+        Mostrando {products.length} de {products.length} productos
+      </p>
     </section>
   );
 }

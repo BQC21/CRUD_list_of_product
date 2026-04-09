@@ -1,10 +1,42 @@
+"use client";
+
+import { useState } from "react";
 import { SearchBar } from "@/features/components/SearchBar";
 import { ProductFilters } from "@/features/components/ProductFilters";
 import { ProductTable } from "@/features/components/ProductTable";
+import Button2Modal from "@/app/components/button2modal";
+import type { Product } from "@/features/components/product-types";
 
 const EXCHANGE_RATE = 3.75;
+const INITIAL_PRODUCTS: Product[] = [
+  {
+    id: "initial-product-1",
+    supplierCode: "AND-001",
+    supplier: "Andet SAC",
+    code: "PANEL-450-MONO",
+    type: "Módulo",
+    brand: "JA SOLAR",
+    unit: "Unidad",
+    description: "Panel Solar Monocristalino 450W",
+    connectionType: "",
+    maxPower: "450W",
+    mpptNumber: "",
+    dod: "",
+    arraysPerMppt: "",
+    voc: "",
+    vmpp: "",
+    isc: "",
+    impp: "",
+    priceInputCurrency: "PEN",
+    pricePen: 1003,
+    priceUsd: 267.47,
+    igv: 18,
+  },
+];
 
 export default function Page() {
+  const [products, setProducts] = useState<Product[]>(INITIAL_PRODUCTS);
+
   return (
     <main className="min-h-screen bg-[var(--page-bg)] text-[var(--foreground)]">
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-3 py-5 sm:px-6 lg:px-8">
@@ -22,14 +54,10 @@ export default function Page() {
           </div>
 
           <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
-            {/* <button type="button" className="action-button action-button--success">
-              <UploadIcon />
-              <span>Carga Masiva</span>
-            </button> */}
-            <button type="button" className="action-button action-button--primary">
-              <PlusIcon />
-              <span>Añadir Producto</span>
-            </button>
+            <Button2Modal
+              exchangeRate={EXCHANGE_RATE}
+              onAddProduct={(product) => setProducts((current) => [product, ...current])}
+            />
           </div>
         </section>
 
@@ -40,43 +68,8 @@ export default function Page() {
           </div>
         </section>
 
-        <ProductTable />
+        <ProductTable products={products} />
       </div>
     </main>
-  );
-}
-
-// function UploadIcon() {
-//   return (
-//     <svg
-//       aria-hidden="true"
-//       className="h-5 w-5"
-//       fill="none"
-//       viewBox="0 0 24 24"
-//       stroke="currentColor"
-//       strokeWidth="2"
-//     >
-//       <path strokeLinecap="round" strokeLinejoin="round" d="M12 16V4m0 0-4 4m4-4 4 4" />
-//       <path
-//         strokeLinecap="round"
-//         strokeLinejoin="round"
-//         d="M5 15v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-3"
-//       />
-//     </svg>
-//   );
-// }
-
-function PlusIcon() {
-  return (
-    <svg
-      aria-hidden="true"
-      className="h-5 w-5"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-      strokeWidth="2"
-    >
-      <path strokeLinecap="round" strokeLinejoin="round" d="M12 5v14M5 12h14" />
-    </svg>
   );
 }
