@@ -25,6 +25,7 @@ const TABLE_HEADERS = [
 
 type ProductTableProps = {
   products: Product[];
+  totalProducts: number;
 };
 
 function formatPen(value: number) {
@@ -35,7 +36,7 @@ function formatUsd(value: number) {
   return `$ ${value.toFixed(2)}`;
 }
 
-export function ProductTable({ products }: ProductTableProps) {
+export function ProductTable({ products, totalProducts }: ProductTableProps) {
   return (
     <section className="space-y-4">
       <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_2px_8px_rgba(15,23,42,0.04)]">
@@ -97,9 +98,8 @@ export function ProductTable({ products }: ProductTableProps) {
           </table>
         </div>
       </div>
-
       <p className="text-lg text-slate-500">
-        Mostrando {products.length} de {products.length} productos
+        Mostrando {products.length} de {totalProducts} productos
       </p>
     </section>
   );

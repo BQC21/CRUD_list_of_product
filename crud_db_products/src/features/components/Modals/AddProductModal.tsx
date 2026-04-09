@@ -22,8 +22,7 @@ type ProductFormState = Omit<Product, "id">;
 
 // --- Opciones para llenar los campos ---
 const SUPPLIER_OPTIONS = ["Andet SAC", "Sigelet SAC", "AutoSolar SAC", "Novum Solar SAC",
-                          "Caral Energía SAC", "Felicity SAC", "RE&GE Import", "Grupo Coinp", "Proyect and Quality"
-];
+                          "Caral Energía SAC", "Felicity SAC", "RE&GE Import", "Grupo Coinp", "Proyect and Quality"];
 const SUPPLIER_CODE_OPTIONS = ["ANDE", "SIGE", "AUTO", "NOVU", "CARA", "FELI", 
                                 "REGE", "COIN", "PROY"];
 const PRODUCT_TYPE_OPTIONS = ["Accesorio", "Batería", "Controlador", "Convertidor", "Datalogger", "Estructura",

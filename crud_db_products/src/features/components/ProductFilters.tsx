@@ -1,24 +1,40 @@
 import { FilterIcon } from "@/app/components/icons/FilterIcon";
 
+type FilterKey = "type" | "brand" | "supplier";
+
+export type ProductFilterValues = Record<FilterKey, string>;
+
 const FILTERS = [
   {
     id: "type",
     label: "Filtrar por Tipo",
     placeholder: "Todos los Tipos",
+    content: ["Accesorio", "Batería", "Controlador", "Convertidor", "Datalogger", "Estructura",
+              "Inversor", "Módulo", "Monitor", "Smart Meter", "Cable", "Protección", "MC4"],
   },
   {
     id: "brand",
     label: "Filtrar por Marca",
     placeholder: "Todas las Marcas",
+    content: ["LIVOLTEK", "GOODWE", "JA SOLAR", "INVT", "PYLONTECH", "VICTRON", "TELPERION",
+              "JINKO", "SOLIS", "SOLUNA", "TRINA", "FELICITY", "SUNTREE", "TIBOX",
+              "CHINT", "INDECO", "SCHNEIDER", "ABB"],
   },
   {
     id: "supplier",
     label: "Filtrar por Proveedor",
     placeholder: "Todos los Proveedores",
+    content: ["Andet SAC", "Sigelet SAC", "AutoSolar SAC", "Novum Solar SAC",
+              "Caral Energía SAC", "Felicity SAC", "RE&GE Import", "Grupo Coinp", "Proyect and Quality"],
   },
 ];
 
-export function ProductFilters() {
+type ProductFiltersProps = {
+  values: ProductFilterValues;
+  onFilterChange: (key: FilterKey, value: string) => void;
+};
+
+export function ProductFilters({ values, onFilterChange }: ProductFiltersProps) {
   return (
     <div className="grid gap-4 lg:grid-cols-3">
       {FILTERS.map((filter) => (
@@ -26,8 +42,17 @@ export function ProductFilters() {
           <span className="block text-lg font-semibold text-slate-600">{filter.label}</span>
           <div className="relative">
             <FilterIcon />
-            <select className="filter-control h-12 w-full appearance-none pl-11 pr-10">
-              <option>{filter.placeholder}</option>
+            <select
+              className="filter-control h-12 w-full appearance-none pl-11 pr-10"
+              value={values[filter.id as FilterKey]}
+              onChange={(event) => onFilterChange(filter.id as FilterKey, event.target.value)}
+            >
+              <option value="">{filter.placeholder}</option>
+              {filter.content.map((item) => (
+                <option key={item} value={item}>
+                  {item}
+                </option>
+              ))}
             </select>
             <svg
               aria-hidden="true"

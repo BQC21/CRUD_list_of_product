@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { SearchBar } from "@/features/components/SearchBar";
-import { ProductFilters } from "@/features/components/ProductFilters";
+// import { SearchBar } from "@/features/components/SearchBar";
+import { ProductFilters, type ProductFilterValues } from "@/features/components/ProductFilters";
 import { ProductTable } from "@/features/components/ProductTable";
 import Button2Modal from "@/app/components/Buttons/button2modal";
 import type { Product } from "@/features/types/product-types";
@@ -36,6 +36,20 @@ const INITIAL_PRODUCTS: Product[] = [
 
 export default function Page() {
   const [products, setProducts] = useState<Product[]>(INITIAL_PRODUCTS);
+  const [filters, setFilters] = useState<ProductFilterValues>({
+    type: "",
+    brand: "",
+    supplier: "",
+  });
+  // const [searchTerm, setSearchTerm] = useState("");
+
+  const filteredProducts = products.filter((product) => {
+    const matchesType = !filters.type || product.type === filters.type;
+    const matchesBrand = !filters.brand || product.brand === filters.brand;
+    const matchesSupplier = !filters.supplier || product.supplier === filters.supplier;
+
+    return matchesType && matchesBrand && matchesSupplier;
+  });
 
   return (
     <main className="min-h-screen bg-[var(--page-bg)] text-[var(--foreground)]">
@@ -63,12 +77,23 @@ export default function Page() {
 
         <section className="panel">
           <div className="space-y-6">
-            <SearchBar />
-            <ProductFilters />
+            {/* <SearchBar 
+              value={searchTerm}
+              onChange={(newValue: string) => setSearchTerm(newValue)}
+            /> */}
+            <ProductFilters
+              values={filters}
+              onFilterChange={(key, value) =>
+                setFilters((current) => ({
+                  ...current,
+                  [key]: value,
+                }))
+              }
+            />
           </div>
         </section>
 
-        <ProductTable products={products} />
+        <ProductTable products={filteredProducts} totalProducts={products.length} />
       </div>
     </main>
   );
