@@ -1,12 +1,21 @@
 import type { Product } from "@/features/types/product-types";
 
 const TABLE_HEADERS = [
-  "Cód. Prov.",
+  "Código Proveedor",
   "Proveedor",
   "Código",
   "Tipo",
   "Marca",
   "Descripción",
+  "Tipo de Conexión",
+  "Potencia Máxima (KW)",
+  "Número de MPPT",
+  "DoD (%)",
+  "Arrays por MPPT",
+  "VOC (V)",
+  "VMPP (V)",
+  "ISC (A)",
+  "IMPP (A)",
   "Precio S/.",
   "Precio $",
   "Acciones",
