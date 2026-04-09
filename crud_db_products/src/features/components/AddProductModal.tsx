@@ -24,6 +24,8 @@ type ProductFormState = Omit<Product, "id">;
 const SUPPLIER_OPTIONS = ["Andet SAC", "Sigelet SAC", "AutoSolar SAC", "Novum Solar SAC",
                           "Caral Energía SAC", "Felicity SAC", "RE&GE Import", "Grupo Coinp", "Proyect and Quality"
 ];
+const SUPPLIER_CODE_OPTIONS = ["ANDE", "SIGE", "AUTO", "NOVU", "CARA", "FELI", 
+                                "REGE", "COIN", "PROY"];
 const PRODUCT_TYPE_OPTIONS = ["Accesorio", "Batería", "Controlador", "Convertidor", "Datalogger", "Estructura",
                               "Inversor", "Módulo", "Monitor", "Smart Meter", "Cable", "Protección", "MC4"];
 const BRAND_OPTIONS = ["LIVOLTEK", "GOODWE", "JA SOLAR", "INVT", "PYLONTECH", "VICTRON", "TELPERION",
@@ -35,21 +37,21 @@ const CONNECTION_TYPE_OPTIONS = ["1F 220V", "3F 220V", "3F 380V", "1F", "3F"];
 // --- Contenido para llenar la lista de productos  ---
 const INITIAL_FORM: ProductFormState = {
   supplier: SUPPLIER_OPTIONS[0],
-  supplierCode: "",
+  supplierCode: SUPPLIER_CODE_OPTIONS[0],
   code: "",
   type: PRODUCT_TYPE_OPTIONS[0],
   brand: BRAND_OPTIONS[0],
   unit: UNIT_OPTIONS[0],
   description: "",
-  connectionType: "",
+  connectionType: CONNECTION_TYPE_OPTIONS[0],
   maxPower: "",
-  mpptNumber: "",
-  dod: "",
-  arraysPerMppt: "",
-  voc: "",
-  vmpp: "",
-  isc: "",
-  impp: "",
+  mpptNumber: "1",
+  dod: "80",
+  arraysPerMppt: "1",
+  voc: "400",
+  vmpp: "375",
+  isc: "10",
+  impp: "9.5",
   priceInputCurrency: "PEN",
   pricePen: 0,
   priceUsd: 0,
