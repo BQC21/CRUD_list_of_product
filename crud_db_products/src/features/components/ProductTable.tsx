@@ -1,4 +1,5 @@
 import { Button2Edit } from "@/app/components/Buttons/button2edit";
+import { Button2Trash } from "@/app/components/Buttons/button2trash";
 import type { Product } from "@/features/types/product-types";
 
 const TABLE_HEADERS = [
@@ -82,7 +83,11 @@ export function ProductTable({ products, totalProducts, exchangeRate, onUpdatePr
                             product={product}
                             exchangeRate={exchangeRate}
                             onUpdateProduct={onUpdateProduct}
-                          />
+                        />
+                        <Button2Trash 
+                            product={product}
+                            onDeleteProduct={onUpdateProduct}
+                        />
                       </div>
                     </td>
                   </tr>
