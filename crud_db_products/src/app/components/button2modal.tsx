@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { AddProductModal } from "@/features/components/AddProductModal";
-import type { Product } from "@/features/components/product-types";
+import type { Product } from "@/features/types/product-types";
 
 type Button2ModalProps = {
     exchangeRate: number;

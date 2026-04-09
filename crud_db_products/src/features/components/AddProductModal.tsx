@@ -9,7 +9,7 @@ import { AddProductSectionTitle } from "@/app/components/AddProductSectionTitle"
 import { AddProductSelectField } from "@/app/components/AddProductSelectField";
 import { AddProductTextAreaField } from "@/app/components/AddProductTextAreaField";
 import { AddProductTextField } from "@/app/components/AddProductTextField";
-import type { CurrencyCode, Product } from "@/features/components/product-types";
+import type { CurrencyCode, Product } from "@/features/types/product-types";
 
 // --- Tipo de variables ---
 type AddProductModalProps = {
@@ -44,7 +44,7 @@ const INITIAL_FORM: ProductFormState = {
   unit: UNIT_OPTIONS[0],
   description: "",
   connectionType: CONNECTION_TYPE_OPTIONS[0],
-  maxPower: "",
+  maxPower: "5",
   mpptNumber: "1",
   dod: "80",
   arraysPerMppt: "1",
@@ -81,6 +81,7 @@ export function AddProductModal({ exchangeRate, onAddProduct, onClose }: AddProd
     };
   }, [exchangeRate, form.igv, form.priceInputCurrency, form.pricePen, form.priceUsd]);
 
+  // Actualizar campos del formulario
   function updateField<K extends keyof ProductFormState>(field: K, value: ProductFormState[K]) {
     setForm((current) => ({
       ...current,
@@ -138,7 +139,7 @@ export function AddProductModal({ exchangeRate, onAddProduct, onClose }: AddProd
                   onChange={(value) => updateField("supplier", value)}
                 />
                 <AddProductTextField
-                  label="Código Proveedor"
+                  label="Código del Proveedor"
                   value={form.supplierCode}
                   onChange={(value) => updateField("supplierCode", value)}
                 />
@@ -192,7 +193,7 @@ export function AddProductModal({ exchangeRate, onAddProduct, onClose }: AddProd
                   onChange={(value) => updateField("connectionType", value === CONNECTION_TYPE_OPTIONS[0] ? "" : value)}
                 />
                 <AddProductTextField
-                  label="Potencia Máxima"
+                  label="Potencia Máxima en Kw"
                   placeholder="5kW"
                   value={form.maxPower}
                   onChange={(value) => updateField("maxPower", value)}
@@ -204,7 +205,7 @@ export function AddProductModal({ exchangeRate, onAddProduct, onClose }: AddProd
                   onChange={(value) => updateField("mpptNumber", value)}
                 />
                 <AddProductTextField
-                  label="DoD (Grado de degradación)"
+                  label="DoD - Grado de degradación (%)"
                   placeholder="95%"
                   value={form.dod}
                   onChange={(value) => updateField("dod", value)}
@@ -216,27 +217,27 @@ export function AddProductModal({ exchangeRate, onAddProduct, onClose }: AddProd
                   onChange={(value) => updateField("arraysPerMppt", value)}
                 />
                 <AddProductTextField
-                  label="VOC (Voltaje máximo)"
+                  label="VOC (Voltaje máximo) en Voltios"
                   placeholder="550V"
                   value={form.voc}
                   onChange={(value) => updateField("voc", value)}
                 />
                 <AddProductTextField
-                  label="VMPP (Voltaje mínimo)"
+                  label="VMPP (Voltaje mínimo) en Voltios"
                   placeholder="120V"
                   value={form.vmpp}
                   onChange={(value) => updateField("vmpp", value)}
                 />
                 <AddProductTextField
-                  label="ISC (Corriente máxima entrada)"
+                  label="ISC (Corriente máxima entrada) en Amperios"
                   placeholder="12.5A"
                   value={form.isc}
                   onChange={(value) => updateField("isc", value)}
                 />
                 <AddProductTextField
-                  label="IMPP (Corriente máxima salida)"
+                  label="IMPP (Corriente máxima salida) en Amperios"
                   placeholder="11.8A"
-                  value={form.impp}
+                  value={form.impp} 
                   onChange={(value) => updateField("impp", value)}
                 />
               </div>

@@ -1,4 +1,4 @@
-import type { Product } from "@/features/components/product-types";
+import type { Product } from "@/features/types/product-types";
 
 const TABLE_HEADERS = [
   "Cód. Prov.",
