@@ -63,6 +63,15 @@ export function ProductTable({ products }: ProductTableProps) {
                     <td className="px-4 py-5 text-slate-900">{product.type}</td>
                     <td className="px-4 py-5 text-slate-900">{product.brand}</td>
                     <td className="px-4 py-5 text-slate-900">{product.description}</td>
+                    <td className="px-4 py-5 text-slate-900">{product.connectionType}</td>
+                    <td className="px-4 py-5 text-slate-900">{product.maxPower}</td>
+                    <td className="px-4 py-5 text-slate-900">{product.mpptNumber}</td>
+                    <td className="px-4 py-5 text-slate-900">{product.dod}</td>
+                    <td className="px-4 py-5 text-slate-900">{product.arraysPerMppt}</td>
+                    <td className="px-4 py-5 text-slate-900">{product.voc}</td>
+                    <td className="px-4 py-5 text-slate-900">{product.vmpp}</td>
+                    <td className="px-4 py-5 text-slate-900">{product.isc}</td>
+                    <td className="px-4 py-5 text-slate-900">{product.impp}</td>
                     <td className="px-4 py-5 text-slate-900">{formatPen(product.pricePen)}</td>
                     <td className="px-4 py-5 text-slate-900">{formatUsd(product.priceUsd)}</td>
                     <td className="px-4 py-5">

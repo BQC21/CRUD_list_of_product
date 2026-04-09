@@ -4,7 +4,7 @@ import { useState } from "react";
 import { SearchBar } from "@/features/components/SearchBar";
 import { ProductFilters } from "@/features/components/ProductFilters";
 import { ProductTable } from "@/features/components/ProductTable";
-import Button2Modal from "@/app/components/button2modal";
+import Button2Modal from "@/app/components/Buttons/button2modal";
 import type { Product } from "@/features/types/product-types";
 
 const EXCHANGE_RATE = 3.75;
