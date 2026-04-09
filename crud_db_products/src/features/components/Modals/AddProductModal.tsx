@@ -10,6 +10,19 @@ import { AddProductSelectField } from "@/app/components/Form_fields/AddProductSe
 import { AddProductTextAreaField } from "@/app/components/Form_fields/AddProductTextAreaField";
 import { AddProductTextField } from "@/app/components/Form_fields/AddProductTextField";
 import type { CurrencyCode, Product } from "@/features/types/product-types";
+import {
+  CONNECTION_TYPE_OPTIONS,
+  INITIAL_PRODUCT_FORM,
+  BRAND_OPTIONS,
+  PRODUCT_TYPE_OPTIONS,
+  SUPPLIER_OPTIONS,
+  UNIT_OPTIONS,
+  computePricesWithIgv,
+  convertPenToUsd,
+  convertUsdToPen,
+  formatReadonlyCurrency,
+  type ProductFormState,
+} from "@/utils/helpers";
 
 // --- Tipo de variables ---
 type AddProductModalProps = {
@@ -18,66 +31,21 @@ type AddProductModalProps = {
   onClose: () => void;
 };
 
-type ProductFormState = Omit<Product, "id">;
-
-// --- Opciones para llenar los campos ---
-const SUPPLIER_OPTIONS = ["Andet SAC", "Sigelet SAC", "AutoSolar SAC", "Novum Solar SAC",
-                          "Caral Energía SAC", "Felicity SAC", "RE&GE Import", "Grupo Coinp", "Proyect and Quality"];
-const SUPPLIER_CODE_OPTIONS = ["ANDE", "SIGE", "AUTO", "NOVU", "CARA", "FELI", 
-                                "REGE", "COIN", "PROY"];
-const PRODUCT_TYPE_OPTIONS = ["Accesorio", "Batería", "Controlador", "Convertidor", "Datalogger", "Estructura",
-                              "Inversor", "Módulo", "Monitor", "Smart Meter", "Cable", "Protección", "MC4"];
-const BRAND_OPTIONS = ["LIVOLTEK", "GOODWE", "JA SOLAR", "INVT", "PYLONTECH", "VICTRON", "TELPERION",
-                        "JINKO", "SOLIS", "SOLUNA", "TRINA", "FELICITY", "SUNTREE", "TIBOX",
-                        "CHINT", "INDECO", "SCHNEIDER", "ABB"];
-const UNIT_OPTIONS = ["Unidad", "Metros"];
-const CONNECTION_TYPE_OPTIONS = ["1F 220V", "3F 220V", "3F 380V", "1F", "3F"];
-
-// --- Contenido para llenar la lista de productos  ---
-const INITIAL_FORM: ProductFormState = {
-  supplier: SUPPLIER_OPTIONS[0],
-  supplierCode: SUPPLIER_CODE_OPTIONS[0],
-  code: "",
-  type: PRODUCT_TYPE_OPTIONS[0],
-  brand: BRAND_OPTIONS[0],
-  unit: UNIT_OPTIONS[0],
-  description: "",
-  connectionType: CONNECTION_TYPE_OPTIONS[0],
-  maxPower: "5",
-  mpptNumber: "1",
-  dod: "80",
-  arraysPerMppt: "1",
-  voc: "400",
-  vmpp: "375",
-  isc: "10",
-  impp: "9.5",
-  priceInputCurrency: "PEN",
-  pricePen: 0,
-  priceUsd: 0,
-  igv: 18,
-};
-
-function formatReadonlyCurrency(symbol: string, value: number) {
-  return `${symbol} ${value.toFixed(2)}`;
-}
-
 //////////////////////////////7
 
 export function AddProductModal({ exchangeRate, onAddProduct, onClose }: AddProductModalProps) {
-  const [form, setForm] = useState<ProductFormState>(INITIAL_FORM);
+  const [form, setForm] = useState<ProductFormState>(INITIAL_PRODUCT_FORM);
 
   // Calcular cambios de precios
   const computedPrices = useMemo(() => {
-    const basePen = form.priceInputCurrency === "PEN" ? form.pricePen : form.priceUsd * exchangeRate;
-    const baseUsd = form.priceInputCurrency === "USD" ? form.priceUsd : form.pricePen / exchangeRate;
-    const igvFactor = 1 + form.igv / 100;
+    const basePen = form.priceInputCurrency === "PEN" ? form.pricePen : convertUsdToPen(form.priceUsd, exchangeRate);
+    const baseUsd = form.priceInputCurrency === "USD" ? form.priceUsd : convertPenToUsd(form.pricePen, exchangeRate);
 
-    return {
-      pricePen: Number.isFinite(basePen) ? basePen : 0,
-      priceUsd: Number.isFinite(baseUsd) ? baseUsd : 0,
-      totalPen: Number.isFinite(basePen) ? basePen * igvFactor : 0,
-      totalUsd: Number.isFinite(baseUsd) ? baseUsd * igvFactor : 0,
-    };
+    return computePricesWithIgv(
+      Number.isFinite(basePen) ? basePen : 0,
+      Number.isFinite(baseUsd) ? baseUsd : 0,
+      form.igv,
+    );
   }, [exchangeRate, form.igv, form.priceInputCurrency, form.pricePen, form.priceUsd]);
 
   // Actualizar campos del formulario
@@ -93,8 +61,8 @@ export function AddProductModal({ exchangeRate, onAddProduct, onClose }: AddProd
     setForm((current) => ({
       ...current,
       priceInputCurrency: currency,
-      pricePen: currency === "PEN" ? current.pricePen : current.priceUsd * exchangeRate,
-      priceUsd: currency === "USD" ? current.priceUsd : current.pricePen / exchangeRate,
+      pricePen: currency === "PEN" ? current.pricePen : convertUsdToPen(current.priceUsd, exchangeRate),
+      priceUsd: currency === "USD" ? current.priceUsd : convertPenToUsd(current.pricePen, exchangeRate),
     }));
   }
 

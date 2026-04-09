@@ -1,5 +1,4 @@
 import { Button2Edit } from "@/app/components/Buttons/button2edit";
-import { Button2Trash } from "@/app/components/Buttons/button2trash";
 import type { Product } from "@/features/types/product-types";
 
 const TABLE_HEADERS = [
@@ -84,9 +83,6 @@ export function ProductTable({ products, totalProducts, exchangeRate, onUpdatePr
                             exchangeRate={exchangeRate}
                             onUpdateProduct={onUpdateProduct}
                           />
-                        {/* <button type="button" className="table-icon-button text-red-500" title="Eliminar producto">
-                          <Button2Trash />
-                        </button> */}
                       </div>
                     </td>
                   </tr>
