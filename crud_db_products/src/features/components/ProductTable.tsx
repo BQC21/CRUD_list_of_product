@@ -1,5 +1,5 @@
-import { EditIcon } from "@/app/components/icons/EditIcon";
-import { TrashIcon } from "@/app/components/icons/TrashIcon";
+import { Button2Edit } from "@/app/components/Buttons/button2edit";
+import { Button2Trash } from "@/app/components/Buttons/button2trash";
 import type { Product } from "@/features/types/product-types";
 
 const TABLE_HEADERS = [
@@ -26,6 +26,8 @@ const TABLE_HEADERS = [
 type ProductTableProps = {
   products: Product[];
   totalProducts: number;
+  exchangeRate: number;
+  onUpdateProduct: (product: Product) => void;
 };
 
 function formatPen(value: number) {
@@ -36,7 +38,7 @@ function formatUsd(value: number) {
   return `$ ${value.toFixed(2)}`;
 }
 
-export function ProductTable({ products, totalProducts }: ProductTableProps) {
+export function ProductTable({ products, totalProducts, exchangeRate, onUpdateProduct }: ProductTableProps) {
   return (
     <section className="space-y-4">
       <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_2px_8px_rgba(15,23,42,0.04)]">
@@ -77,12 +79,14 @@ export function ProductTable({ products, totalProducts }: ProductTableProps) {
                     <td className="px-4 py-5 text-slate-900">{formatUsd(product.priceUsd)}</td>
                     <td className="px-4 py-5">
                       <div className="flex items-center gap-4 text-slate-500">
-                        <button type="button" className="table-icon-button text-indigo-600" title="Editar producto">
-                          <EditIcon />
-                        </button>
-                        <button type="button" className="table-icon-button text-red-500" title="Eliminar producto">
-                          <TrashIcon />
-                        </button>
+                        <Button2Edit
+                            product={product}
+                            exchangeRate={exchangeRate}
+                            onUpdateProduct={onUpdateProduct}
+                          />
+                        {/* <button type="button" className="table-icon-button text-red-500" title="Eliminar producto">
+                          <Button2Trash />
+                        </button> */}
                       </div>
                     </td>
                   </tr>

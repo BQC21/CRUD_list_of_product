@@ -93,7 +93,18 @@ export default function Page() {
           </div>
         </section>
 
-        <ProductTable products={filteredProducts} totalProducts={products.length} />
+        <ProductTable 
+          products={filteredProducts} 
+          totalProducts={products.length} 
+          exchangeRate={EXCHANGE_RATE}
+          onUpdateProduct={(updatedProduct) =>
+            setProducts((current) =>
+              current.map((product) =>
+                product.id === updatedProduct.id ? updatedProduct : product
+              )
+            )
+          }
+        />
       </div>
     </main>
   );
