@@ -1,3 +1,5 @@
+import { EditIcon } from "@/app/components/icons/EditIcon";
+import { TrashIcon } from "@/app/components/icons/TrashIcon";
 import type { Product } from "@/features/types/product-types";
 
 const TABLE_HEADERS = [
@@ -65,10 +67,10 @@ export function ProductTable({ products }: ProductTableProps) {
                     <td className="px-4 py-5 text-slate-900">{formatUsd(product.priceUsd)}</td>
                     <td className="px-4 py-5">
                       <div className="flex items-center gap-4 text-slate-500">
-                        <button type="button" className="table-icon-button text-indigo-600">
+                        <button type="button" className="table-icon-button text-indigo-600" title="Editar producto">
                           <EditIcon />
                         </button>
-                        <button type="button" className="table-icon-button text-red-500">
+                        <button type="button" className="table-icon-button text-red-500" title="Eliminar producto">
                           <TrashIcon />
                         </button>
                       </div>
@@ -91,31 +93,5 @@ export function ProductTable({ products }: ProductTableProps) {
         Mostrando {products.length} de {products.length} productos
       </p>
     </section>
-  );
-}
-
-function EditIcon() {
-  return (
-    <svg aria-hidden="true" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="m16.862 4.487 2.651 2.651a1.875 1.875 0 0 1 0 2.652L9.75 19.553 4.5 21l1.447-5.25L15.71 4.487a1.875 1.875 0 0 1 2.652 0Z"
-      />
-    </svg>
-  );
-}
-
-function TrashIcon() {
-  return (
-    <svg aria-hidden="true" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M4 7h16" />
-      <path strokeLinecap="round" strokeLinejoin="round" d="M10 11v6M14 11v6" />
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3"
-      />
-    </svg>
   );
 }

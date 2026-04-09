@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { AddProductCloseIcon } from "@/app/components/AddProductCloseIcon";
+import { AddProductCloseIcon } from "@/app/components/icons/AddProductCloseIcon";
 import { AddProductNumberField } from "@/app/components/AddProductNumberField";
 import { AddProductRadioField } from "@/app/components/AddProductRadioField";
 import { AddProductReadonlyField } from "@/app/components/AddProductReadonlyField";

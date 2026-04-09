@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { PlusIcon } from "@/app/components/icons/PlusIcon";
 import { AddProductModal } from "@/features/components/AddProductModal";
 import type { Product } from "@/features/types/product-types";
 
@@ -8,21 +9,6 @@ type Button2ModalProps = {
     exchangeRate: number;
     onAddProduct: (product: Product) => void;
 };
-
-function PlusIcon() {
-    return (
-        <svg
-            aria-hidden="true"
-            className="h-5 w-5"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth="2"
-        >
-        <path strokeLinecap="round" strokeLinejoin="round" d="M12 5v14M5 12h14" />
-        </svg>
-    );
-}
 
 export default function Button2Modal({ exchangeRate, onAddProduct }: Button2ModalProps) {
     const [open, setOpen] = useState(false);
