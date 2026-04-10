@@ -1,6 +1,7 @@
 import { Button2Edit } from "@/app/components/Buttons/button2edit";
 import { Button2Trash } from "@/app/components/Buttons/button2trash";
 import type { Product } from "@/features/types/product-types";
+import { useProducts } from "@/features/hooks/useRealtimeProducts";
 
 const TABLE_HEADERS = [
   "Código Proveedor",
@@ -24,7 +25,7 @@ const TABLE_HEADERS = [
 ];
 
 type ProductTableProps = {
-  products: Product[];
+  useProducts: () => ReturnType<typeof useProducts>;
   totalProducts: number;
   exchangeRate: number;
   onUpdateProduct: (product: Product) => void;
@@ -39,7 +40,8 @@ function formatUsd(value: number) {
   return `$ ${value.toFixed(2)}`;
 }
 
-export function ProductTable({ products, totalProducts, exchangeRate, onUpdateProduct, onDeleteProduct }: ProductTableProps) {
+export function ProductTable({ useProducts, totalProducts, exchangeRate, onUpdateProduct, onDeleteProduct }: ProductTableProps) {
+  const { products } = useProducts();
 
   return (
     <section className="space-y-4">

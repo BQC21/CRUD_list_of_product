@@ -5,51 +5,18 @@ import { useState } from "react";
 import { ProductFilters, type ProductFilterValues } from "@/features/components/ProductFilters";
 import { ProductTable } from "@/features/components/ProductTable";
 import Button2Modal from "@/app/components/Buttons/button2modal";
-import type { Product } from "@/features/types/product-types";
+import { useProducts } from "@/features/hooks/useRealtimeProducts";
 
 const EXCHANGE_RATE = 3.75;
-const INITIAL_PRODUCTS: Product[] = [
-  {
-    id: "initial-product-1",
-    supplierCode: "AND-001",
-    supplier: "Andet SAC",
-    code: "PANEL-450-MONO",
-    type: "Módulo",
-    brand: "JA SOLAR",
-    unit: "Unidad",
-    description: "Panel Solar Monocristalino 450W",
-    connectionType: "1F 220V",
-    maxPower: "450",
-    mpptNumber: "1",
-    dod: "80",
-    arraysPerMppt: "1",
-    voc: "400",
-    vmpp: "375",
-    isc: "10",
-    impp: "9.5",
-    priceInputCurrency: "PEN",
-    pricePen: 1003,
-    priceUsd: 267.47,
-    igv: 18,
-  },
-];
 
 export default function Page() {
-  const [products, setProducts] = useState<Product[]>(INITIAL_PRODUCTS);
+  const { products } = useProducts();
   const [filters, setFilters] = useState<ProductFilterValues>({
     type: "",
     brand: "",
     supplier: "",
   });
   // const [searchTerm, setSearchTerm] = useState("");
-
-  const filteredProducts = products.filter((product) => {
-    const matchesType = !filters.type || product.type === filters.type;
-    const matchesBrand = !filters.brand || product.brand === filters.brand;
-    const matchesSupplier = !filters.supplier || product.supplier === filters.supplier;
-
-    return matchesType && matchesBrand && matchesSupplier;
-  });
 
   return (
     <main className="min-h-screen bg-[var(--page-bg)] text-[var(--foreground)]">
@@ -70,7 +37,7 @@ export default function Page() {
           <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
             <Button2Modal
               exchangeRate={EXCHANGE_RATE}
-              onAddProduct={(product) => setProducts((current) => [product, ...current])}
+              onAddProduct={(product) => products.push(product)}
             />
           </div>
         </section>
@@ -94,23 +61,11 @@ export default function Page() {
         </section>
 
         <ProductTable 
-          products={filteredProducts} 
-          totalProducts={products.length} 
+          useProducts={useProducts}
+          totalProducts={products.length}
           exchangeRate={EXCHANGE_RATE}
-          onUpdateProduct={(updatedProduct) =>
-            setProducts((current) =>
-              current.map((product) =>
-                product.id === updatedProduct.id ? updatedProduct : product
-              )
-            )
-          }
-          onDeleteProduct={(productId: string) =>
-            setProducts((current) =>
-              current.filter((product) =>
-                product.id !== productId
-              )
-            )
-          }
+          onUpdateProduct={() => {}}
+          onDeleteProduct={() => {}}
         />
       </div>
     </main>

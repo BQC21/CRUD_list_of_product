@@ -44,8 +44,13 @@ export function useProducts(): UseProductsResult {
     }, []);
 
     useEffect(() => {
+        void fetchProducts();
+    }, [fetchProducts]);
+
+    useEffect(() => {
+        const channelName = `products-realtime-${Date.now()}-${Math.random().toString(36).slice(2)}`; // previene colision de suscripciones
         const channel = supabase
-            .channel("products-realtime")
+            .channel(channelName)
             .on(
                 "postgres_changes",
                 { event: "INSERT", schema: "public", table: "products" },
