@@ -7,13 +7,17 @@ import { ProductTable } from "@/features/components/ProductTable";
 import Button2Modal from "@/app/components/Buttons/button2modal";
 import { useProductMutations, useProducts } from "@/features/hooks/useRealtimeProducts";
 import type { Product, ProductFormData } from "@/features/types/product-types";
-import { current_converter } from "@/features/hooks/useAPIFrankfurter";
-
-const EXCHANGE_RATE = (current_converter("PEN", "USD", 10) as number | undefined) ?? 10; // tasa de cambio fija para conversión PEN-USD
+import { useConverter } from "@/features/hooks/useConverter";
 
 export default function Page() {
+
   const { products, refetch } = useProducts();
   const { create, update, remove } = useProductMutations();
+  const {
+    exchangeRate,
+    loading: exchangeRateLoading,
+    error: exchangeRateError,
+  } = useConverter("USD", "PEN");
   const [filters, setFilters] = useState<ProductFilterValues>({
     type: "",
     brand: "",
@@ -45,6 +49,26 @@ export default function Page() {
     await refetch();
   }
 
+  if (exchangeRateLoading) {
+    return (
+      <main className="min-h-screen bg-[var(--page-bg)] text-[var(--foreground)]">
+        <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-3 py-5 sm:px-6 lg:px-8">
+          <p className="text-lg text-slate-600">Cargando tasa de conversión...</p>
+        </div>
+      </main>
+    );
+  }
+
+  if (exchangeRateError) {
+    return (
+      <main className="min-h-screen bg-[var(--page-bg)] text-[var(--foreground)]">
+        <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-3 py-5 sm:px-6 lg:px-8">
+          <p className="text-lg text-red-600">{exchangeRateError}</p>
+        </div>
+      </main>
+    );
+  }
+
   return (
     <main className="min-h-screen bg-[var(--page-bg)] text-[var(--foreground)]">
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-3 py-5 sm:px-6 lg:px-8">
@@ -57,13 +81,13 @@ export default function Page() {
               Gestión de inventario de productos para energía solar fotovoltaica
             </p>
             <p className="text-lg text-slate-500">
-              Tasa de cambio actual: S/. {EXCHANGE_RATE.toFixed(2)} por dólar
+              Tasa de cambio actual: S/. {exchangeRate.toFixed(2)} por dólar
             </p>
           </div>
 
           <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
             <Button2Modal
-              exchangeRate={EXCHANGE_RATE}
+              exchangeRate={exchangeRate}
               onAddProduct={handleAddProduct}
             />
           </div>
@@ -90,7 +114,7 @@ export default function Page() {
         <ProductTable 
           products={filteredProducts}
           totalProducts={products.length}
-          exchangeRate={EXCHANGE_RATE}
+          exchangeRate={exchangeRate}
           onUpdateProduct={handleUpdateProduct}
           onDeleteProduct={handleDeleteProduct}
         />
