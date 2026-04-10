@@ -53,21 +53,21 @@ export function useProducts(): UseProductsResult {
             .channel(channelName)
             .on(
                 "postgres_changes",
-                { event: "INSERT", schema: "public", table: "products" },
+                { event: "INSERT", schema: "public", table: "productos" },
                 () => {
                     void fetchProducts();
                 }
             )
             .on(
                 "postgres_changes",
-                { event: "UPDATE", schema: "public", table: "products" },
+                { event: "UPDATE", schema: "public", table: "productos" },
                 () => {
                     void fetchProducts();
                 }
             )
             .on(
                 "postgres_changes",
-                { event: "DELETE", schema: "public", table: "products" },
+                { event: "DELETE", schema: "public", table: "productos" },
                 () => {
                     void fetchProducts();
                 }

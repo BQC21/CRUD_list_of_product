@@ -107,6 +107,7 @@ export function AddProductModal({ exchangeRate, onAddProduct, onClose }: AddProd
                 />
                 <AddProductTextField
                   label="Código del Proveedor"
+                  required
                   value={form.supplierCode}
                   onChange={(value) => updateField("supplierCode", value)}
                 />

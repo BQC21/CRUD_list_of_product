@@ -32,12 +32,23 @@ type ProductTableProps = {
   onDeleteProduct: (productId: string) => void;
 };
 
-function formatPen(value: number) {
-  return `S/. ${value.toFixed(2)}`;
+function toSafeNumber(value: unknown): number {
+  const parsed =
+    typeof value === "number"
+      ? value
+      : typeof value === "string"
+        ? Number(value)
+        : Number.NaN;
+
+  return Number.isFinite(parsed) ? parsed : 0;
 }
 
-function formatUsd(value: number) {
-  return `$ ${value.toFixed(2)}`;
+function formatPen(value: unknown) {
+  return `S/. ${toSafeNumber(value).toFixed(2)}`;
+}
+
+function formatUsd(value: unknown) {
+  return `$ ${toSafeNumber(value).toFixed(2)}`;
 }
 
 export function ProductTable({ useProducts, totalProducts, exchangeRate, onUpdateProduct, onDeleteProduct }: ProductTableProps) {
