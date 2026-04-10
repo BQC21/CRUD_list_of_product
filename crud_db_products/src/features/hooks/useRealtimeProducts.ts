@@ -9,22 +9,13 @@ import {
     getProductFilterOptions,
     updateProduct,
 } from "@/features/services/productQueries";
-import type { Product, ProductFilterOptions, ProductFormData } from "@/features/types/product";
-
-interface UseProductsResult {
-    products: Product[];
-    loading: boolean;
-    error: string | null;
-    refetch: () => Promise<void>;
-}
-
-interface UseProductMutationsResult {
-    loading: boolean;
-    error: string | null;
-    create: (product: ProductFormData) => Promise<Product>;
-    update: (id: string, product: ProductFormData) => Promise<Product>;
-    remove: (id: string) => Promise<void>;
-}
+import type { 
+    Product,
+    ProductFormData,
+    ProductFilterOptions,
+    UseProductMutationsResult,
+    UseProductsResult,
+} from "@/features/types/product-types.ts";
 
 export function useProducts(): UseProductsResult {
     const [products, setProducts] = useState<Product[]>([]);

@@ -23,3 +23,26 @@ export type Product = {
   priceUsd: number;
   igv: number;
 };
+
+export type ProductFormData = Omit<Product, "id">;
+
+export interface UseProductsResult {
+    products: Product[];
+    loading: boolean;
+    error: string | null;
+    refetch: () => Promise<void>;
+}
+
+export type ProductFilterOptions = {
+    types: string[];
+    brands: string[];
+    suppliers: string[];
+};
+
+export interface UseProductMutationsResult {
+    loading: boolean;
+    error: string | null;
+    create: (product: ProductFormData) => Promise<Product>;
+    update: (id: string, product: ProductFormData) => Promise<Product>;
+    remove: (id: string) => Promise<void>;
+}

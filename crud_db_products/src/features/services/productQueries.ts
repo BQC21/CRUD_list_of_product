@@ -1,5 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
-import type { Product, ProductFormData } from "@/features/types/product";
+import type { Product, ProductFormData } from "@/features/types/product-types";
 
 const PRODUCTS_TABLE = "products";
 
