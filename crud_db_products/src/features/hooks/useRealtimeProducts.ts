@@ -15,7 +15,11 @@ import type {
     ProductFilterOptions,
     UseProductMutationsResult,
     UseProductsResult,
-} from "@/features/types/product-types.ts";
+} from "@/features/types/product-types";
+
+import { createClient } from "@/lib/supabase/client";
+
+const supabase = createClient();
 
 export function useProducts(): UseProductsResult {
     const [products, setProducts] = useState<Product[]>([]);
@@ -40,7 +44,36 @@ export function useProducts(): UseProductsResult {
     }, []);
 
     useEffect(() => {
-        void fetchProducts();
+        const channel = supabase
+            .channel("products-realtime")
+            .on(
+                "postgres_changes",
+                { event: "INSERT", schema: "public", table: "products" },
+                () => {
+                    void fetchProducts();
+                }
+            )
+            .on(
+                "postgres_changes",
+                { event: "UPDATE", schema: "public", table: "products" },
+                () => {
+                    void fetchProducts();
+                }
+            )
+            .on(
+                "postgres_changes",
+                { event: "DELETE", schema: "public", table: "products" },
+                () => {
+                    void fetchProducts();
+                }
+            )
+            .subscribe();
+
+        // Cierra el canal realtime para evitar listeners duplicados y fugas de memoria.
+        return () => {
+            void supabase.removeChannel(channel);
+        };
+
     }, [fetchProducts]);
 
     return {
