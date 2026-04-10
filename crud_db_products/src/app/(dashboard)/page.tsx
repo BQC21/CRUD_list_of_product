@@ -6,8 +6,9 @@ import { ProductFilters, type ProductFilterValues } from "@/features/components/
 import { ProductTable } from "@/features/components/ProductTable";
 import Button2Modal from "@/app/components/Buttons/button2modal";
 import { useProducts } from "@/features/hooks/useRealtimeProducts";
+import { current_converter } from "@/features/hooks/useAPIFrankfurter";
 
-const EXCHANGE_RATE = 3.75;
+const EXCHANGE_RATE = (current_converter("PEN", "USD", 10) as number | undefined) ?? 10; // tasa de cambio fija para conversión PEN-USD
 
 export default function Page() {
   const { products } = useProducts();
