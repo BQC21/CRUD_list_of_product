@@ -1,7 +1,6 @@
 import { Button2Edit } from "@/app/components/Buttons/button2edit";
 import { Button2Trash } from "@/app/components/Buttons/button2trash";
 import type { Product } from "@/features/types/product-types";
-import { useProducts } from "@/features/hooks/useRealtimeProducts";
 
 const TABLE_HEADERS = [
   "Código Proveedor",
@@ -25,7 +24,7 @@ const TABLE_HEADERS = [
 ];
 
 type ProductTableProps = {
-  useProducts: () => ReturnType<typeof useProducts>;
+  products: Product[];
   totalProducts: number;
   exchangeRate: number;
   onUpdateProduct: (product: Product) => void;
@@ -51,9 +50,7 @@ function formatUsd(value: unknown) {
   return `$ ${toSafeNumber(value).toFixed(2)}`;
 }
 
-export function ProductTable({ useProducts, totalProducts, exchangeRate, onUpdateProduct, onDeleteProduct }: ProductTableProps) {
-  const { products } = useProducts();
-
+export function ProductTable({ products, totalProducts, exchangeRate, onUpdateProduct, onDeleteProduct }: ProductTableProps) {
   return (
     <section className="space-y-4">
       <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_2px_8px_rgba(15,23,42,0.04)]">
@@ -109,7 +106,7 @@ export function ProductTable({ useProducts, totalProducts, exchangeRate, onUpdat
                 ))
               ) : (
                 <tr className="bg-white">
-                  <td colSpan={9} className="px-4 py-10 text-center text-slate-500">
+                  <td colSpan={TABLE_HEADERS.length} className="px-4 py-10 text-center text-slate-500">
                     No hay productos registrados todavía.
                   </td>
                 </tr>

@@ -50,7 +50,7 @@ export function mapSupabaseRowToProduct(
     priceInputCurrency: "PEN",
     pricePen: row.precio_soles || 0,
     priceUsd: row.precio_dolares || 0,
-    igv: row.igv || 0,
+    igv: row.igv ? row.igv * 100 : 0,
   };
 }
 
@@ -79,6 +79,6 @@ export function mapProductToSupabaseRow(
     impp: Number(product.impp) || undefined,
     precio_soles: product.pricePen,
     precio_dolares: product.priceUsd,
-    igv: product.igv,
+    igv: product.igv / 100,
   };
 }

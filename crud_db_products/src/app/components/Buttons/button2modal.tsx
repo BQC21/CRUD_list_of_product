@@ -3,11 +3,11 @@
 import { useState } from "react";
 import { PlusIcon } from "@/app/components/icons/PlusIcon";
 import { AddProductModal } from "@/features/components/Modals/AddProductModal";
-import type { Product } from "@/features/types/product-types";
+import type { ProductFormData } from "@/features/types/product-types";
 
 type Button2ModalProps = {
     exchangeRate: number;
-    onAddProduct: (product: Product) => void;
+    onAddProduct: (product: ProductFormData) => void;
 };
 
 export default function Button2Modal({ exchangeRate, onAddProduct }: Button2ModalProps) {
@@ -26,8 +26,8 @@ export default function Button2Modal({ exchangeRate, onAddProduct }: Button2Moda
         {open && (
             <AddProductModal
                 exchangeRate={exchangeRate}
-                onAddProduct={(product) => {
-                    onAddProduct(product);
+                onAddProduct={async (product) => {
+                    await onAddProduct(product);
                     setOpen(false);
                 }}
                 onClose={() => setOpen(false)}

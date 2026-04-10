@@ -70,10 +70,10 @@ export function EditProductModal({ product, exchangeRate, onUpdateProduct, onClo
     }
 
     // Aceptar actualizacion
-    function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
 
-        onUpdateProduct({
+        await onUpdateProduct({
             id: product.id,
             ...form,
             pricePen: Number(computedPrices.pricePen.toFixed(2)),

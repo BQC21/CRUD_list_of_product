@@ -5,19 +5,45 @@ import { useState } from "react";
 import { ProductFilters, type ProductFilterValues } from "@/features/components/ProductFilters";
 import { ProductTable } from "@/features/components/ProductTable";
 import Button2Modal from "@/app/components/Buttons/button2modal";
-import { useProducts } from "@/features/hooks/useRealtimeProducts";
+import { useProductMutations, useProducts } from "@/features/hooks/useRealtimeProducts";
+import type { Product, ProductFormData } from "@/features/types/product-types";
 import { current_converter } from "@/features/hooks/useAPIFrankfurter";
 
 const EXCHANGE_RATE = (current_converter("PEN", "USD", 10) as number | undefined) ?? 10; // tasa de cambio fija para conversión PEN-USD
 
 export default function Page() {
-  const { products } = useProducts();
+  const { products, refetch } = useProducts();
+  const { create, update, remove } = useProductMutations();
   const [filters, setFilters] = useState<ProductFilterValues>({
     type: "",
     brand: "",
     supplier: "",
   });
   // const [searchTerm, setSearchTerm] = useState("");
+
+  const filteredProducts = products.filter((product) => {
+    const matchesType = !filters.type || product.type === filters.type;
+    const matchesBrand = !filters.brand || product.brand === filters.brand;
+    const matchesSupplier = !filters.supplier || product.supplier === filters.supplier;
+
+    return matchesType && matchesBrand && matchesSupplier;
+  });
+
+  async function handleAddProduct(product: ProductFormData) {
+    await create(product);
+    await refetch();
+  }
+
+  async function handleUpdateProduct(updatedProduct: Product) {
+    const { id, ...productData } = updatedProduct;
+    await update(id, productData);
+    await refetch();
+  }
+
+  async function handleDeleteProduct(productId: string) {
+    await remove(productId);
+    await refetch();
+  }
 
   return (
     <main className="min-h-screen bg-[var(--page-bg)] text-[var(--foreground)]">
@@ -38,7 +64,7 @@ export default function Page() {
           <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
             <Button2Modal
               exchangeRate={EXCHANGE_RATE}
-              onAddProduct={(product) => products.push(product)}
+              onAddProduct={handleAddProduct}
             />
           </div>
         </section>
@@ -62,11 +88,11 @@ export default function Page() {
         </section>
 
         <ProductTable 
-          useProducts={useProducts}
+          products={filteredProducts}
           totalProducts={products.length}
           exchangeRate={EXCHANGE_RATE}
-          onUpdateProduct={() => {}}
-          onDeleteProduct={() => {}}
+          onUpdateProduct={handleUpdateProduct}
+          onDeleteProduct={handleDeleteProduct}
         />
       </div>
     </main>

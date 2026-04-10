@@ -14,9 +14,9 @@ type DeleteProductModalProps = {
 export function DeleteProductModal({ product, onDeleteProduct, onClose }: DeleteProductModalProps) {
 
     // Aceptar actualizacion
-    function handleDeleteProduct(event: React.FormEvent<HTMLFormElement>) {
+    async function handleDeleteProduct(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
-        onDeleteProduct(product.id);
+        await onDeleteProduct(product.id);
         onClose();
     }
 

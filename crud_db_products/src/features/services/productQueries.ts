@@ -93,15 +93,15 @@ export async function getProductFilterOptions(): Promise<{
 
   const { data, error } = await supabase
     .from(PRODUCTS_TABLE)
-    .select("type, brand, supplier");
+    .select("tipo, marca, proveedor");
 
   if (error) {
     throw new Error(`Error al obtener las opciones de filtrado: ${error.message}`);
   }
 
-  const types = Array.from(new Set(data.map((item) => item.type)));
-  const brands = Array.from(new Set(data.map((item) => item.brand)));
-  const suppliers = Array.from(new Set(data.map((item) => item.supplier)));
+  const types = Array.from(new Set(data.map((item) => item.tipo).filter(Boolean)));
+  const brands = Array.from(new Set(data.map((item) => item.marca).filter(Boolean)));
+  const suppliers = Array.from(new Set(data.map((item) => item.proveedor).filter(Boolean)));
 
   return { types, brands, suppliers };
 }

@@ -9,7 +9,7 @@ import { AddProductSectionTitle } from "@/app/components/Form_fields/AddProductS
 import { AddProductSelectField } from "@/app/components/Form_fields/AddProductSelectField";
 import { AddProductTextAreaField } from "@/app/components/Form_fields/AddProductTextAreaField";
 import { AddProductTextField } from "@/app/components/Form_fields/AddProductTextField";
-import type { CurrencyCode, Product } from "@/features/types/product-types";
+import type { CurrencyCode, ProductFormData } from "@/features/types/product-types";
 import {
   CONNECTION_TYPE_OPTIONS,
   INITIAL_PRODUCT_FORM,
@@ -27,7 +27,7 @@ import {
 // --- Tipo de variables ---
 type AddProductModalProps = {
   exchangeRate: number;
-  onAddProduct: (product: Product) => void;
+  onAddProduct: (product: ProductFormData) => void;
   onClose: () => void;
 };
 
@@ -71,7 +71,6 @@ export function AddProductModal({ exchangeRate, onAddProduct, onClose }: AddProd
     event.preventDefault();
 
     onAddProduct({
-      id: crypto.randomUUID(),
       ...form,
       pricePen: Number(computedPrices.pricePen.toFixed(2)),
       priceUsd: Number(computedPrices.priceUsd.toFixed(2)),
