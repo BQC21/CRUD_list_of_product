@@ -5,6 +5,7 @@ type AddProductSelectFieldProps = {
   required?: boolean;
   options: string[];
   value: string;
+  disabled?: boolean;
   onChange: (value: string) => void;
 };
 
@@ -13,6 +14,7 @@ export function AddProductSelectField({
   required,
   options,
   value,
+  disabled,
   onChange,
 }: AddProductSelectFieldProps) {
   return (
@@ -20,6 +22,7 @@ export function AddProductSelectField({
       <AddProductFieldLabel label={label} required={required} />
       <select
         required={required}
+        disabled={disabled}
         value={value}
         onChange={(event) => onChange(event.target.value)}
         aria-label={label}
