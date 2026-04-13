@@ -1,5 +1,7 @@
+// Codigos de definición para tipo de cambio
 export type CurrencyCode = "PEN" | "USD";
 
+// Campos para la base de datos para los productos
 export type Product = {
     id: string;
     supplier: string;
@@ -18,14 +20,17 @@ export type Product = {
     vmpp: string;
     isc: string;
     impp: string;
+    powerSource: string;
     priceInputCurrency: CurrencyCode;
     pricePen: number;
     priceUsd: number;
     igv: number;
 };
 
+// Estado del formulario para agregar o editar productos
 export type ProductFormData = Omit<Product, "id">;
 
+// Estado de la visualización de productos
 export interface UseProductsResult {
     products: Product[];
     loading: boolean;
@@ -33,12 +38,14 @@ export interface UseProductsResult {
     refetch: () => Promise<void>;
 }
 
+// Opciones para el filtrado de productos
 export type ProductFilterOptions = {
     types: string[];
     brands: string[];
     suppliers: string[];
 };
 
+// Mostrar tabla de productos modificadas
 export interface UseProductMutationsResult {
     loading: boolean;
     error: string | null;
