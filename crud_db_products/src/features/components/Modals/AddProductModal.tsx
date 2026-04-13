@@ -24,6 +24,15 @@ import {
   formatReadonlyCurrency,
   type ProductFormState,
 } from "@/utils/helpers";
+import { 
+  shouldRenderArraysPerMppt, 
+  shouldRenderDod, 
+  shouldRenderMaxPower, 
+  shouldRenderMppt, 
+  shouldRenderPowerSource, 
+  shouldRenderVocVmppIscImpp, 
+  shouldRenderConnectionType 
+} from "@/utils/renders";
 
 // --- Tipo de variables ---
 type AddProductModalProps = {
@@ -31,35 +40,6 @@ type AddProductModalProps = {
   onAddProduct: (product: ProductFormData) => void;
   onClose: () => void;
 };
-
-// --- Funciones auxiliares para mostrar campos según tipo de producto ---
-function shouldRenderConnectionType(productType: string): boolean {
-  return productType === "Inversor" || productType === "Batería";
-}
-
-function shouldRenderMaxPower(productType: string): boolean {
-  return productType === "Inversor" || productType === "Módulo";
-}
-
-function shouldRenderMppt(productType: string): boolean {
-  return productType === "Inversor";
-}
-
-function shouldRenderDod(productType: string): boolean {
-  return productType === "Inversor" || productType === "Batería";
-}
-
-function shouldRenderArraysPerMppt(productType: string): boolean {
-  return productType === "Inversor";
-}
-
-function shouldRenderVocVmppIscImpp(productType: string): boolean {
-  return productType === "Inversor" || productType === "Módulo" || productType === "Batería";
-}
-
-function shouldRenderPowerSource(productType: string): boolean {
-  return productType === "Cable" || productType === "Protección" || productType === "MC4";
-}
 
 export function AddProductModal({ exchangeRate, onAddProduct, onClose }: AddProductModalProps) {
   const [form, setForm] = useState<ProductFormState>(INITIAL_PRODUCT_FORM);
