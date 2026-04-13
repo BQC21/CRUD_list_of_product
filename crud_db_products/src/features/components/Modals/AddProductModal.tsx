@@ -17,6 +17,7 @@ import {
   PRODUCT_TYPE_OPTIONS,
   SUPPLIER_OPTIONS,
   UNIT_OPTIONS,
+  POWER_SOURCE_OPTIONS,
   computePricesWithIgv,
   convertPenToUsd,
   convertUsdToPen,
@@ -31,7 +32,34 @@ type AddProductModalProps = {
   onClose: () => void;
 };
 
-//////////////////////////////7
+// --- Funciones auxiliares para mostrar campos según tipo de producto ---
+function shouldRenderConnectionType(productType: string): boolean {
+  return productType === "Inversor" || productType === "Batería";
+}
+
+function shouldRenderMaxPower(productType: string): boolean {
+  return productType === "Inversor" || productType === "Módulo";
+}
+
+function shouldRenderMppt(productType: string): boolean {
+  return productType === "Inversor";
+}
+
+function shouldRenderDod(productType: string): boolean {
+  return productType === "Inversor" || productType === "Batería";
+}
+
+function shouldRenderArraysPerMppt(productType: string): boolean {
+  return productType === "Inversor";
+}
+
+function shouldRenderVocVmppIscImpp(productType: string): boolean {
+  return productType === "Inversor" || productType === "Módulo" || productType === "Batería";
+}
+
+function shouldRenderPowerSource(productType: string): boolean {
+  return productType === "Cable" || productType === "Protección" || productType === "MC4";
+}
 
 export function AddProductModal({ exchangeRate, onAddProduct, onClose }: AddProductModalProps) {
   const [form, setForm] = useState<ProductFormState>(INITIAL_PRODUCT_FORM);
@@ -50,10 +78,14 @@ export function AddProductModal({ exchangeRate, onAddProduct, onClose }: AddProd
 
   // Actualizar campos del formulario
   function updateField<K extends keyof ProductFormState>(field: K, value: ProductFormState[K]) {
-    setForm((current) => ({
-      ...current,
-      [field]: value,
-    }));
+    setForm((current) => {
+      const updated = { ...current, [field]: value };
+      // Establecer connectionType a "BAT" cuando se selecciona Batería
+      if (field === "type" && value === "Batería") {
+        updated.connectionType = "BAT";
+      }
+      return updated;
+    });
   }
 
   // Cambiar la modalidad base de precios
@@ -153,60 +185,103 @@ export function AddProductModal({ exchangeRate, onAddProduct, onClose }: AddProd
             <section className="space-y-5">
               <AddProductSectionTitle title="Especificaciones Técnicas" />
               <div className="grid gap-5 md:grid-cols-2">
-                <AddProductSelectField
-                  label="Tipo de Conexión"
-                  value={form.connectionType || CONNECTION_TYPE_OPTIONS[0]}
-                  options={CONNECTION_TYPE_OPTIONS}
-                  onChange={(value) => updateField("connectionType", value === CONNECTION_TYPE_OPTIONS[0] ? "" : value)}
-                />
-                <AddProductTextField
-                  label="Potencia Máxima en Kw"
-                  placeholder="5kW"
-                  value={form.maxPower}
-                  onChange={(value) => updateField("maxPower", value)}
-                />
-                <AddProductTextField
-                  label="Número de MPPT"
-                  placeholder="2"
-                  value={form.mpptNumber}
-                  onChange={(value) => updateField("mpptNumber", value)}
-                />
-                <AddProductTextField
-                  label="DoD - Grado de degradación (%)"
-                  placeholder="95%"
-                  value={form.dod}
-                  onChange={(value) => updateField("dod", value)}
-                />
-                <AddProductTextField
-                  label="Arreglos por MPPT"
-                  placeholder="2"
-                  value={form.arraysPerMppt}
-                  onChange={(value) => updateField("arraysPerMppt", value)}
-                />
-                <AddProductTextField
-                  label="VOC (Voltaje máximo) en Voltios"
-                  placeholder="550V"
-                  value={form.voc}
-                  onChange={(value) => updateField("voc", value)}
-                />
-                <AddProductTextField
-                  label="VMPP (Voltaje mínimo) en Voltios"
-                  placeholder="120V"
-                  value={form.vmpp}
-                  onChange={(value) => updateField("vmpp", value)}
-                />
-                <AddProductTextField
-                  label="ISC (Corriente máxima entrada) en Amperios"
-                  placeholder="12.5A"
-                  value={form.isc}
-                  onChange={(value) => updateField("isc", value)}
-                />
-                <AddProductTextField
-                  label="IMPP (Corriente máxima salida) en Amperios"
-                  placeholder="11.8A"
-                  value={form.impp} 
-                  onChange={(value) => updateField("impp", value)}
-                />
+                {/* Tipo de Conexión - Inversor y Batería */}
+                {shouldRenderConnectionType(form.type) && (
+                  <AddProductSelectField
+                    label="Tipo de Conexión"
+                    value={form.connectionType || CONNECTION_TYPE_OPTIONS[0]}
+                    options={
+                      form.type === "Batería"
+                        ? ["BAT"]
+                        : CONNECTION_TYPE_OPTIONS
+                    }
+                    onChange={(value) =>
+                      updateField("connectionType", value === CONNECTION_TYPE_OPTIONS[0] ? "" : value)
+                    }
+                  />
+                )}
+
+                {/* Potencia Máxima - Inversor y Módulo */}
+                {shouldRenderMaxPower(form.type) && (
+                  <AddProductTextField
+                    label="Potencia Máxima en Kw"
+                    placeholder="5kW"
+                    value={form.maxPower}
+                    onChange={(value) => updateField("maxPower", value)}
+                  />
+                )}
+
+                {/* MPPT - Solo Inversor */}
+                {shouldRenderMppt(form.type) && (
+                  <AddProductTextField
+                    label="Número de MPPT"
+                    placeholder="2"
+                    value={form.mpptNumber}
+                    onChange={(value) => updateField("mpptNumber", value)}
+                  />
+                )}
+
+                {/* DoD - Inversor y Batería */}
+                {shouldRenderDod(form.type) && (
+                  <AddProductTextField
+                    label="DoD - Grado de degradación (%)"
+                    placeholder="95%"
+                    value={form.dod}
+                    onChange={(value) => updateField("dod", value)}
+                  />
+                )}
+
+                {/* Arreglos por MPPT - Solo Inversor */}
+                {shouldRenderArraysPerMppt(form.type) && (
+                  <AddProductTextField
+                    label="Arreglos por MPPT"
+                    placeholder="2"
+                    value={form.arraysPerMppt}
+                    onChange={(value) => updateField("arraysPerMppt", value)}
+                  />
+                )}
+
+                {/* VOC, VMPP, ISC, IMPP - Inversor, Módulo y Batería */}
+                {shouldRenderVocVmppIscImpp(form.type) && (
+                  <>
+                    <AddProductTextField
+                      label="VOC (Voltaje máximo) en Voltios"
+                      placeholder="550V"
+                      value={form.voc}
+                      onChange={(value) => updateField("voc", value)}
+                    />
+                    <AddProductTextField
+                      label="VMPP (Voltaje mínimo) en Voltios"
+                      placeholder="120V"
+                      value={form.vmpp}
+                      onChange={(value) => updateField("vmpp", value)}
+                    />
+                    <AddProductTextField
+                      label="ISC (Corriente máxima entrada) en Amperios"
+                      placeholder="12.5A"
+                      value={form.isc}
+                      onChange={(value) => updateField("isc", value)}
+                    />
+                    {(form.type === "Inversor" || form.type === "Módulo") && (
+                      <AddProductTextField
+                        label="IMPP (Corriente máxima salida) en Amperios"
+                        placeholder="11.8A"
+                        value={form.impp}
+                        onChange={(value) => updateField("impp", value)}
+                      />
+                    )}
+                  </>
+                )}
+
+                {/* Fuente Eléctrica - Cable, Protección y MC4 */}
+                {shouldRenderPowerSource(form.type) && (
+                  <AddProductSelectField
+                    label="Fuente Eléctrica"
+                    value={form.powerSource}
+                    options={POWER_SOURCE_OPTIONS}
+                    onChange={(value) => updateField("powerSource", value)}
+                  />
+                )}
               </div>
             </section>
 

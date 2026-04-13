@@ -58,6 +58,8 @@ export const UNIT_OPTIONS = ["Unidad", "Metros"];
 
 export const CONNECTION_TYPE_OPTIONS = ["1F 220V", "3F 220V", "3F 380V", "1F", "3F"];
 
+export const POWER_SOURCE_OPTIONS = ["DC", "AC", "DC/AC"];
+
 export const INITIAL_PRODUCT_FORM: ProductFormState = {
 	supplier: SUPPLIER_OPTIONS[0],
 	supplierCode: SUPPLIER_CODE_OPTIONS[0],
@@ -75,6 +77,7 @@ export const INITIAL_PRODUCT_FORM: ProductFormState = {
 	vmpp: "375",
 	isc: "10",
 	impp: "9.5",
+	powerSource: "",
 	priceInputCurrency: "PEN",
 	pricePen: 0,
 	priceUsd: 0,
@@ -99,6 +102,7 @@ export function createProductFormStateFromProduct(product: Product): ProductForm
 		vmpp: product.vmpp,
 		isc: product.isc,
 		impp: product.impp,
+		powerSource: product.powerSource,
 		priceInputCurrency: product.priceInputCurrency,
 		pricePen: product.pricePen,
 		priceUsd: product.priceUsd,
