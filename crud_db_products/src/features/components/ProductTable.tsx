@@ -18,8 +18,11 @@ const TABLE_HEADERS = [
   "VMPP (V)",
   "ISC (A)",
   "IMPP (A)",
+  "Fuente eléctrica",
   "Precio S/.",
   "Precio $",
+  "Precio S/. con IGV",
+  "Precio $ con IGV",
   "Acciones",
 ];
 
@@ -87,8 +90,11 @@ export function ProductTable({ products, totalProducts, exchangeRate, onUpdatePr
                     <td className="px-4 py-5 text-slate-900">{product.vmpp}</td>
                     <td className="px-4 py-5 text-slate-900">{product.isc}</td>
                     <td className="px-4 py-5 text-slate-900">{product.impp}</td>
+                    <td className="px-4 py-5 text-slate-900">{product.powerSource}</td>
                     <td className="px-4 py-5 text-slate-900">{formatPen(product.pricePen)}</td>
                     <td className="px-4 py-5 text-slate-900">{formatUsd(product.priceUsd)}</td>
+                    <td className="px-4 py-5 text-slate-900">{formatPen(product.precio_soles_igv)}</td>
+                    <td className="px-4 py-5 text-slate-900">{formatUsd(product.precio_dolares_igv)}</td>
                     <td className="px-4 py-5">
                       <div className="flex items-center gap-4 text-slate-500">
                         <Button2Edit
