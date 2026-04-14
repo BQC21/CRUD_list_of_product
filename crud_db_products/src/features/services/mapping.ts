@@ -20,7 +20,10 @@ export type SupabaseProductRow = {
   impp?: number;
   precio_soles?: number;
   precio_dolares?: number;
+  precio_soles_igv?: number;
+  precio_dolares_igv?: number;
   igv?: number;
+  fuente_electrica?: string;
   power_source?: string;
 };
 
@@ -52,7 +55,9 @@ export function mapSupabaseRowToProduct(
     pricePen: row.precio_soles || 0,
     priceUsd: row.precio_dolares || 0,
     igv: row.igv ? row.igv * 100 : 0,
-    powerSource: row.power_source || "",
+    powerSource: row.fuente_electrica || row.power_source || "",
+    precio_soles_igv: row.precio_soles_igv || 0,
+    precio_dolares_igv: row.precio_dolares_igv || 0,
   };
 }
 
@@ -82,6 +87,6 @@ export function mapProductToSupabaseRow(
     precio_soles: product.pricePen,
     precio_dolares: product.priceUsd,
     igv: product.igv / 100,
-    power_source: product.powerSource,
+    fuente_electrica: product.powerSource,
   };
 }

@@ -20,11 +20,13 @@ export type Product = {
     vmpp: string;
     isc: string;
     impp: string;
-    powerSource: string;
     priceInputCurrency: CurrencyCode;
     pricePen: number;
     priceUsd: number;
     igv: number;
+    powerSource: string;
+    precio_soles_igv: number;
+    precio_dolares_igv: number;
 };
 
 // Estado del formulario para agregar o editar productos

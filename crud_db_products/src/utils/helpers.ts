@@ -58,7 +58,7 @@ export const UNIT_OPTIONS = ["Unidad", "Metros"];
 
 export const CONNECTION_TYPE_OPTIONS = ["1F 220V", "3F 220V", "3F 380V", "1F", "3F"];
 
-export const POWER_SOURCE_OPTIONS = ["DC", "AC", "DC/AC"];
+export const POWER_SOURCE_OPTIONS = ["DC", "AC", "DC/AC", "BAT"];
 
 export const INITIAL_PRODUCT_FORM: ProductFormState = {
 	supplier: SUPPLIER_OPTIONS[0],
@@ -82,6 +82,8 @@ export const INITIAL_PRODUCT_FORM: ProductFormState = {
 	pricePen: 0,
 	priceUsd: 0,
 	igv: 18,
+	precio_soles_igv: 0,
+	precio_dolares_igv: 0,
 };
 
 export function createProductFormStateFromProduct(product: Product): ProductFormState {
@@ -107,6 +109,8 @@ export function createProductFormStateFromProduct(product: Product): ProductForm
 		pricePen: product.pricePen,
 		priceUsd: product.priceUsd,
 		igv: product.igv,
+		precio_soles_igv: product.precio_soles_igv,
+		precio_dolares_igv: product.precio_dolares_igv,
 	};
 }
 
