@@ -1,0 +1,3 @@
+[submodule "crud_db_products/module_1"]
+	path = crud_db_products/module_1
+	url = git@github.com:BQC21/CRUD_list_of_product.git
