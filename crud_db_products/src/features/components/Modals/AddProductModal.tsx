@@ -201,7 +201,7 @@ export function AddProductModal({ exchangeRate, onAddProduct, onClose }: AddProd
                   />
                 )}
 
-                {/* DoD - Inversor y Batería */}
+                {/* DoD - Batería */}
                 {shouldRenderDod(form.type) && (
                   <AddProductTextField
                     label="DoD - Grado de degradación (%)"

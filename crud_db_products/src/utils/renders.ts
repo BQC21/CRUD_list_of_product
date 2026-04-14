@@ -12,7 +12,7 @@ export function shouldRenderMppt(productType: string): boolean {
 }
 
 export function shouldRenderDod(productType: string): boolean {
-  return productType === "Inversor" || productType === "Batería";
+  return productType === "Batería";
 }
 
 export function shouldRenderArraysPerMppt(productType: string): boolean {
